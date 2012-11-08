@@ -15,6 +15,8 @@ class emaildripcampaign_templates{
 	//initialize the class
 	static function init(){
 		add_action('init', array(get_class(), 'add_new_posttype'));
+		add_action('add_meta_boxes',array(get_class(), 'add_metaboxes'));
+		add_filter('post_updated_messages', array(get_class(), 'template_updated_messages'));
 	}
 	
 	
@@ -55,5 +57,39 @@ class emaildripcampaign_templates{
 			'supports' => array( 'title', 'editor')			
 		); 
 		register_post_type(self::posttype, $args);	
+	}
+	
+	
+	/*		
+	 * add metaboxes
+	 */
+	static function add_metaboxes(){				
+		add_meta_box('email-template-essentials', __('Email Replay Essentials'), array(get_class(), 'metabox_content'), self::posttype, 'normal', 'high');
+	}
+	
+	
+	//metabox content
+	static function metabox_content(){
+		global $post;		
+		//$meta_values = self::getPostMeta($post->ID);		
+		include self::get_file_location('includes/metaboxes/email-essentials.php');
+	}
+	
+	
+	//include different php scripts
+	static function get_file_location($location = ''){
+		return EMAILDRIPCAMPAIGN_DIR . '/' . $location;
+	}
+	
+	
+	/*
+	 * changes the updated message
+	 */
+	static function template_updated_messages($messages){
+						
+		$messages[self::posttype][1] = __(self::singular . " updated");
+		$messages[self::posttype][6] = __(self::singular . " updated");
+				
+		return $messages;
 	}
 }
