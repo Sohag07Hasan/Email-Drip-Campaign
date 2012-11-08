@@ -16,7 +16,13 @@ class emaildripcampaign_templates{
 	static function init(){
 		add_action('init', array(get_class(), 'add_new_posttype'));
 		add_action('add_meta_boxes',array(get_class(), 'add_metaboxes'));
+		
+		//new submenu for make the auto response working
+		add_action('admin_menu', array(get_class(), 'add_new_submenu'));
+		
+		//customizing the post editing page
 		add_filter('post_updated_messages', array(get_class(), 'template_updated_messages'));
+		add_filter('post_row_actions', array(get_class(), 'row_remove_actions'), 10, 2);
 	}
 	
 	
@@ -51,8 +57,8 @@ class emaildripcampaign_templates{
 			'query_var' => true,
 			'rewrite' => true,
 			'capability_type' => 'post',
-			'has_archive' => true, 
-			'hierarchical' => true,
+			'has_archive' => false, 
+			'hierarchical' => false,
 			'menu_position' => 5,
 			'supports' => array( 'title', 'editor')			
 		); 
@@ -91,5 +97,37 @@ class emaildripcampaign_templates{
 		$messages[self::posttype][6] = __(self::singular . " updated");
 				
 		return $messages;
+	}
+	
+	
+	//remove the row actions
+	static function row_remove_actions($actions, $post){
+		if($post->post_type == self::posttype) {
+	    	unset( $actions['inline hide-if-no-js'] );
+	    	unset( $actions['view'] );
+	    }
+	    //var_dump($actions);
+	    return $actions;
+	}
+	
+	
+	//submenu to handle the scheduler
+	static function add_new_submenu(){
+		add_submenu_page('edit.php?post_type=' . self::posttype, 'Schedule Automatic Email Responses', 'AutoResponders', 'manage_options', 'schedule_autoresponder', array(get_class(), 'submenu_autoresponder'));
+	}
+	
+	
+	//auto responder submenu content
+	static function submenu_autoresponder(){
+		switch($_GET['action']){
+			case 'new_scheduler' :
+				include self::get_file_location('includes/add-response-scheduler.php');
+				break;
+				
+			default : 
+				include self::get_file_location('includes/response-scheduler.php');
+				break;
+		}
+		
 	}
 }

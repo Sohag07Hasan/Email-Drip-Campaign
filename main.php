@@ -2,9 +2,9 @@
 /*
  * plugin name: Email Drip Campaign with Cfomrs
  * author: Mahibul Hasan
- * plugin url: http://google.com
- * author url: http://sohag07hasan.elance.com
- *
+ * plugin uri: http://google.com
+ * author uri: http://sohag07hasan.elance.com
+ * Description: Creates an interface to start email campaign with Cforms wp plugin
  */
 
 define("EMAILDRIPCAMPAIGN_DIR", dirname(__FILE__));
