@@ -13,3 +13,6 @@ define("EMAILDRIPCAMPAIGN_URL", plugins_url('/', __FILE__));
 
 include EMAILDRIPCAMPAIGN_DIR . '/classes/email-templates.php';
 emaildripcampaign_templates::init();
+
+include EMAILDRIPCAMPAIGN_DIR . '/classes/email-respnder.php';
+emaildripcampaign_responders::init();
