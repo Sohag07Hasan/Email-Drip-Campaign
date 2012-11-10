@@ -15,6 +15,7 @@ class emaildripcampaign_responders{
 	//initialise the hooks
 	static function init(){
 		add_action('init', array(get_class(), 'add_new_posttype'));
+		add_action( 'admin_enqueue_scripts', array(get_class(), 'include_scripts'));
 	}
 	
 	
@@ -56,5 +57,31 @@ class emaildripcampaign_responders{
 		); 
 		register_post_type(self::posttype, $args);	
 	}
+	
+	
+	
+	/*
+	 * include the scripts
+	 * */
+	static function include_scripts(){
+		//self::include_css();
+		self::include_js();
+	}
+	
+	
+	static function include_css(){
+		wp_register_style('emaildrip_autoresponder_css', EMAILDRIPCAMPAIGN_URL . 'css/emaildrip_autoresponder.css');
+		wp_enqueue_style('emaildrip_autoresponder_css');
+	}
+		
+	
+	static function include_js(){
+		if($_GET['page'] == 'schedule_autoresponder' && $_GET['action'] == 'new_scheduler') :
+			wp_enqueue_script('jquery');
+			wp_register_script('emaildrip_form_field_extender_jquery', EMAILDRIPCAMPAIGN_URL . 'js/jquery.multiFieldExtender-2.0.js', array('jquery'));
+			wp_enqueue_script('emaildrip_form_field_extender_jquery');
+		endif;
+	}
+	
 	
 }
