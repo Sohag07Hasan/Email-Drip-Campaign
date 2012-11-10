@@ -51,7 +51,8 @@
 		
 		.addresponder-with-email-templates-class{
 			padding: 10px;
-			border: 1px solid #7F7F7F;			
+			border: 1px solid #7F7F7F;
+			margin-bottom: 10px;		
 		}
 		
 		.addresponder-with-email-templates-class span{
@@ -60,10 +61,45 @@
 		
 		.addresponder-with-email-templates-class select{
 			background: transparent;
+		  /*  width: 268px; */
+		    padding: 5px;
+		    font-size: 13px;
+		    border: 1px solid #ccc; 
+		    height: 30px;
+		}
+		
+		.reponder-type{
+			width: 150px;
+		}				
+		
+		.responder-template{
+			 width: 268px;
+		}
+		
+		.responder-digit{
+			width: 70px;
+		}
+		
+		.responder_cform{
+			background: transparent;
 		    width: 268px;
 		    padding: 5px;
 		    font-size: 13px;
-		    border: 1px solid #ccc;
+		    border: 1px solid #ccc; 
+		    height: 30px;
+		}
+		
+		.respond-select-guide{
+			margin-right: 268px;
+			padding: 10px;
+		}
+		
+		#responder_title{
+			background: transparent;
+			width: 400px;
+		    padding: 5px;
+		    font-size: 13px;
+		    border: 1px solid #ccc; 
 		    height: 30px;
 		}
 				
@@ -76,6 +112,7 @@
 	<br/>
 	
 	<form class='form-table single-responder' action='' method='post'>
+		<input type="hidden" name="single-responder-submit" value="Y" />
 		<table>
 			<tr> 
 				<td>
@@ -87,7 +124,7 @@
 			<tr> 
 				<td>
 					<span class="guide-texts"> <label for="responder_cform">Schedule Responses to Submission of </label></span> <br/> 
-					<select id="responder_cform" name="responder_cform">
+					<select class="responder_cform" name="responder_cform">
 						<option>Contact Form 1</option>
 						<option>Contact Form 2</option>
 					</select>
@@ -96,47 +133,21 @@
 		</table>
 		
 		<div class="attaching-scheduler-responder">
-			<h2>Schedule Automated Email</h2>
+			<h2> Schedule Automated Email </h2>
 			
-			<!-- 
-			<table>
-				<thead>
-					<tr>
-						<th>Email Template</th>
-						<th>Send Schedule</th>						
-					</tr>					
-										
-				</thead>
-				<tbody>
-					<tr id="addresponder-with-email-templates">
-						<td> 
-							<select recname="templateid" name="emailtemplateid[]">
-								<option value="1"> template 1 </option>
-								<option value="2"> template 2 </option>
-							</select> 
-						</td>
-						
-						<td>
-							<input type="text" name="aweful" rcname="afwfulL" />						
-							
-						</td>
-					</tr>
-				</tbody>
-				
-			</table>
-			 -->
-			 			 
+			<span class="respond-select-guide"> Email Template </span>
+			<span class="respond-select-guide"> Send Schedule </span>			 
 			 
 			 <fieldset class="addresponder-with-email-templates-class" id="addresponder-with-email-templates">
 			 		<span class="respond-select">
-				 		<select recname="templateid" name="emailtemplateid[]">
+				 		<select class="responder-template" recname="templateid" name="emailtemplateid[]">
 							<option value="1"> template 1 </option>
 							<option value="2"> template 2 </option>
 						</select>
 					</span>
 					
 					<span class="respond-select">
-						<select recname="scheduleddigit" name="scheduleddigit[]">
+						<select class="responder-digit" recname="scheduleddigit" name="scheduleddigit[]">
 							<option value="1"> 0 </option>
 							<option value="2"> 1 </option>
 							<option value="3"> 2 </option>
@@ -145,7 +156,7 @@
 					</span>
 					
 					<span class="respond-select">
-						<select recname="scheduledtype" name="scheduledtype[]">
+						<select class="reponder-type" recname="scheduledtype" name="scheduledtype[]">
 							<option value="1"> Hours </option>
 							<option value="2"> Days </option>
 							<option value="3"> Weeks </option>
@@ -156,6 +167,8 @@
 			 
 		</div>
 		
+		<p> <input class="button-primary" type="submit" value="Save Schedule"> </p>
+		
 	</form>	
 	
 </div>
@@ -163,6 +176,7 @@
 <script type="text/javascript">
 
 	jQuery("#addresponder-with-email-templates").EnableMultiField({
+		/*
 		data:[{						
 			templateid : "1",
 			scheduleddigit : "2"
@@ -171,6 +185,7 @@
 			templateid : "2",
 			scheduleddigit: "4"
 		}]
+		*/
 	});		
 			
 </script>
