@@ -125,8 +125,8 @@
 				<td>
 					<span class="guide-texts"> <label for="responder_cform">Schedule Responses to Submission of </label></span> <br/> 
 					<select class="responder_cform" name="responder_cform">
-						<option>Contact Form 1</option>
-						<option>Contact Form 2</option>
+						<option>Choose a Contact Form</option>
+						<?php echo $cforms_dropdown; ?>
 					</select>
 				</td>
 			</tr>
@@ -141,8 +141,16 @@
 			 <fieldset class="addresponder-with-email-templates-class" id="addresponder-with-email-templates">
 			 		<span class="respond-select">
 				 		<select class="responder-template" recname="templateid" name="emailtemplateid[]">
-							<option value="1"> template 1 </option>
-							<option value="2"> template 2 </option>
+							<option value="0"> Choose a Template </option>
+							<?php 
+								if($email_templates) :
+									foreach($email_templates as $email_template) :
+?>
+										<option value="<?php echo $email_template->ID?>"> <?php echo $email_template->post_title; ?> </option>
+<?php 										
+									endforeach;
+								endif;
+							?>
 						</select>
 					</span>
 					
@@ -189,3 +197,8 @@
 	});		
 			
 </script>
+
+<?php
+	//var_dump(get_option('cforms_settings'));
+	//var_dump($email_templates);
+?>

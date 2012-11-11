@@ -16,3 +16,7 @@ emaildripcampaign_templates::init();
 
 include EMAILDRIPCAMPAIGN_DIR . '/classes/email-respnder.php';
 emaildripcampaign_responders::init();
+
+
+//including cform handler
+include EMAILDRIPCAMPAIGN_DIR . '/classes/cforms-handler.php';

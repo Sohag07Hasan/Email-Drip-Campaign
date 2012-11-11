@@ -121,6 +121,8 @@ class emaildripcampaign_templates{
 	static function submenu_autoresponder(){
 		switch($_GET['action']){
 			case 'new_scheduler' :
+				$email_templates = self::get_email_templates();
+				$cforms_dropdown = Cforms_Handler::get_cforms_drop_down();				
 				include self::get_file_location('includes/add-response-scheduler.php');
 				break;
 				
@@ -129,5 +131,17 @@ class emaildripcampaign_templates{
 				break;
 		}
 		
+	}
+	
+	
+	
+	/*
+	 * return the email templates
+	 * */
+	static function get_email_templates(){
+		global $wpdb;
+		$post_type = self::posttype;
+		$sql = "SELECT ID, post_title FROM $wpdb->posts WHERE post_type='$post_type' AND post_status = 'publish'";
+		return $wpdb->get_results($sql);		
 	}
 }
