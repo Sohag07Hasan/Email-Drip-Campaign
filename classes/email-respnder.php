@@ -16,6 +16,8 @@ class emaildripcampaign_responders{
 	static function init(){
 		add_action('init', array(get_class(), 'add_new_posttype'));
 		add_action( 'admin_enqueue_scripts', array(get_class(), 'include_scripts'));
+		
+		add_action('init', array(get_class(), 'handle_form_submission'), 100);
 	}
 	
 	
@@ -76,12 +78,70 @@ class emaildripcampaign_responders{
 		
 	
 	static function include_js(){
-		if($_GET['page'] == 'schedule_autoresponder' && $_GET['action'] == 'new_scheduler') :
+		if($_GET['page'] == 'autoresponder' && $_GET['action'] == 'new') :
 			wp_enqueue_script('jquery');
 			wp_register_script('emaildrip_form_field_extender_jquery', EMAILDRIPCAMPAIGN_URL . 'js/jquery.multiFieldExtender-2.0.js', array('jquery'));
 			wp_enqueue_script('emaildrip_form_field_extender_jquery');
 		endif;
 	}
 	
+	
+	/*
+	 * handle form submission
+	 * */
+	static function handle_form_submission(){
+		if($_POST['single-responder-submit'] == 'Y'){
+			return self::schedule_a_responder();
+		}
+	}
+	
+	
+	/*
+	 * schedule a new responder or edit a new responder
+	 * */
+	static function schedule_a_responder(){
+		//var_dump($_POST); die();
+		$post = array(
+			'post_title' => (empty($_POST['responder_title'])) ? 'Unnamed Scheduler' : $_POST['responder_title'],
+			'post_type' => self::posttype,
+			'post_status' => 'publish'
+		);
+		
+		$post_id = wp_insert_post($post);
+		
+		if($post_id){
+			update_post_meta($post_id, "associated_cform", trim($_POST['responder_cform']));
+			
+			$template_data = array();
+			foreach($_POST['emailtemplateid'] as $key => $id){
+				if($id > 0) :
+					$template_data[] = array(
+						't_id' => $id,
+						'digit' => $_POST['scheduleddigit'][$key],
+						'type' => $_POST['scheduledtype'][$key]
+					);
+				endif;
+			}
+			
+			update_post_meta($post_id, "associated_templates", $template_data);
+		}
+		
+		$redirect_url = get_admin_url('', 'edit.php?post_type=email&page=autoresponder&action=new&id='.$post_id.'&msg=1');
+		
+		return self::do_redirect($redirect_url);		
+	}
+	
+	
+	/*
+	 * make the redirect
+	 * */
+	static function do_redirect($url){
+		if(!function_exists('wp_redirect')){
+			include ABSPATH . '/wp-includes/pluggable.php';
+		}
+		
+		wp_redirect($url);
+		die();
+	}
 	
 }

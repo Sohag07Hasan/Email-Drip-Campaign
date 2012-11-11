@@ -23,6 +23,8 @@ class emaildripcampaign_templates{
 		//customizing the post editing page
 		add_filter('post_updated_messages', array(get_class(), 'template_updated_messages'));
 		add_filter('post_row_actions', array(get_class(), 'row_remove_actions'), 10, 2);
+		
+		
 	}
 	
 	
@@ -113,16 +115,16 @@ class emaildripcampaign_templates{
 	
 	//submenu to handle the scheduler
 	static function add_new_submenu(){
-		add_submenu_page('edit.php?post_type=' . self::posttype, 'Schedule Automatic Email Responses', 'AutoResponders', 'manage_options', 'schedule_autoresponder', array(get_class(), 'submenu_autoresponder'));
+		add_submenu_page('edit.php?post_type=' . self::posttype, 'Schedule Automatic Email Responses', 'AutoResponders', 'manage_options', 'autoresponder', array(get_class(), 'submenu_autoresponder'));
 	}
 	
 	
 	//auto responder submenu content
 	static function submenu_autoresponder(){
 		switch($_GET['action']){
-			case 'new_scheduler' :
+			case 'new' :
 				$email_templates = self::get_email_templates();
-				$cforms_dropdown = Cforms_Handler::get_cforms_drop_down();				
+				$cforms_dropdown = Cforms_Handler::get_cforms_drop_down();								
 				include self::get_file_location('includes/add-response-scheduler.php');
 				break;
 				
@@ -144,4 +146,5 @@ class emaildripcampaign_templates{
 		$sql = "SELECT ID, post_title FROM $wpdb->posts WHERE post_type='$post_type' AND post_status = 'publish'";
 		return $wpdb->get_results($sql);		
 	}
+		
 }

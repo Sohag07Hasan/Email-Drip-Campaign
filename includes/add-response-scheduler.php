@@ -105,19 +105,32 @@
 				
 </style>
 
+<?php 
+	if(isset($_GET['id'])) {
+		$post_id = (int) $_GET['id'];
+		if($post_id){
+			$post = get_post($post_id);		
+			$post_meta = get_post_custom($post_id);
+			$associated_templates = unserialize($post_meta['associated_templates'][0]);
+			$cform_id = $post_meta['associated_cform'][0];
+			$cforms_dropdown = Cforms_Handler::get_cforms_drop_down($cform_id);
+			var_dump($associated_templates);
+		}
+	}
+?>
 
 
 <div class="wrap">
 	<h2> Auto Responder Schedule </h2>
 	<br/>
 	
-	<form class='form-table single-responder' action='' method='post'>
+	<form class='form-table single-responder' action=<?php echo get_admin_url('', 'edit.php?post_type=email&page=autoresponder&action=new'); ?> method='post'>
 		<input type="hidden" name="single-responder-submit" value="Y" />
 		<table>
 			<tr> 
 				<td>
 					<span class="guide-texts"><label for="responder_title"> Responder Title <label></span> <br/> 
-					<input id="responder_title" type="text" name="responder_title" value="<?php ?>"> 
+					<input id="responder_title" type="text" name="responder_title" value="<?php echo $post->post_title; ?>"> 
 				</td>
 			</tr>
 			
@@ -125,7 +138,7 @@
 				<td>
 					<span class="guide-texts"> <label for="responder_cform">Schedule Responses to Submission of </label></span> <br/> 
 					<select class="responder_cform" name="responder_cform">
-						<option>Choose a Contact Form</option>
+						<option value="0">Choose a Contact Form</option>
 						<?php echo $cforms_dropdown; ?>
 					</select>
 				</td>
@@ -156,10 +169,11 @@
 					
 					<span class="respond-select">
 						<select class="responder-digit" recname="scheduleddigit" name="scheduleddigit[]">
-							<option value="1"> 0 </option>
-							<option value="2"> 1 </option>
-							<option value="3"> 2 </option>
-							<option value="4"> 3 </option>
+							<?php 
+								for($i=0; $i<100; $i++){
+									echo "<option value='$i'>$i</option>" ;
+								}							
+							?>
 						</select> 
 					</span>
 					
@@ -194,6 +208,23 @@
 			scheduleddigit: "4"
 		}]
 		*/
+
+		data:[
+			<?php 
+				if($associated_templates){
+					foreach($associated_templates as $template):
+					?>
+						{
+							templateid : <?php echo $template['t_id']; ?>,
+							scheduleddigit : <?php echo $template['digit']; ?>,
+							scheduledtype : <?php echo $template['type']; ?>
+						},
+					<?php 
+					endforeach;
+				}
+			?>
+		]
+		
 	});		
 			
 </script>

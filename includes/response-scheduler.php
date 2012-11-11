@@ -1,5 +1,5 @@
 <div class="wrap">
-	<h2> Auto Responder Schedules <a class="add-new-h2" href="edit.php?post_type=email&page=schedule_autoresponder&action=new_scheduler">Add New</a> </h2>
+	<h2> Auto Responder Schedules <a class="add-new-h2" href="edit.php?post_type=email&page=autoresponder&action=new">Add New</a> </h2>
 	<br/>
 	<table class="widefat">
 		<thead>
