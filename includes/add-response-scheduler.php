@@ -114,7 +114,7 @@
 			$associated_templates = unserialize($post_meta['associated_templates'][0]);
 			$cform_id = $post_meta['associated_cform'][0];
 			$cforms_dropdown = Cforms_Handler::get_cforms_drop_down($cform_id);
-			var_dump($associated_templates);
+			//var_dump($associated_templates);
 		}
 	}
 ?>
@@ -123,6 +123,12 @@
 <div class="wrap">
 	<h2> Auto Responder Schedule </h2>
 	<br/>
+	
+	<?php 
+		if($_GET['msg'] == 1){
+			echo "<div class='updated'><p> Scheduler is saved  </p></div>" ;
+		}
+	?>
 	
 	<form class='form-table single-responder' action=<?php echo get_admin_url('', 'edit.php?post_type=email&page=autoresponder&action=new'); ?> method='post'>
 		<input type="hidden" name="single-responder-submit" value="Y" />
@@ -138,7 +144,6 @@
 				<td>
 					<span class="guide-texts"> <label for="responder_cform">Schedule Responses to Submission of </label></span> <br/> 
 					<select class="responder_cform" name="responder_cform">
-						<option value="0">Choose a Contact Form</option>
 						<?php echo $cforms_dropdown; ?>
 					</select>
 				</td>

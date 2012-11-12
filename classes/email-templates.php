@@ -25,6 +25,10 @@ class emaildripcampaign_templates{
 		add_filter('post_row_actions', array(get_class(), 'row_remove_actions'), 10, 2);
 		
 		
+		//save the meta data
+		add_action('save_post', array(get_class(), 'save_template_essentials'), 100, 2);
+		
+		
 	}
 	
 	
@@ -75,12 +79,35 @@ class emaildripcampaign_templates{
 		add_meta_box('email-template-essentials', __('Email Replay Essentials'), array(get_class(), 'metabox_content'), self::posttype, 'normal', 'high');
 	}
 	
+	//save the metaboxes
+	static function save_template_essentials($post_ID, $post){
+		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) return;
+		if($post->post_type == self::posttype) :
+			update_post_meta($post_ID, 'email-replay-to', trim($_POST['email-replay-to']));
+			update_post_meta($post_ID, 'email-subject', trim($_POST['email-subject']));
+			update_post_meta($post_ID, 'email-from', trim($_POST['email-from']));
+		endif;
+	}
+	
 	
 	//metabox content
 	static function metabox_content(){
 		global $post;		
-		//$meta_values = self::getPostMeta($post->ID);		
+		$meta_values = self::get_template_essentials($post->ID);
+			
 		include self::get_file_location('includes/metaboxes/email-essentials.php');
+	}
+	
+	
+	/*
+	 * return the teplates essentials
+	 * */
+	static function get_template_essentials($post_id){
+		return array(
+			'email-replay-to' => get_post_meta($post_id, 'email-replay-to', true),
+			'email-subject' => get_post_meta($post_id, 'email-subject', true),
+			'email-from' => get_post_meta($post_id, 'email-from', true)
+		);
 	}
 	
 	
@@ -88,6 +115,8 @@ class emaildripcampaign_templates{
 	static function get_file_location($location = ''){
 		return EMAILDRIPCAMPAIGN_DIR . '/' . $location;
 	}
+	
+	
 	
 	
 	/*
@@ -127,14 +156,19 @@ class emaildripcampaign_templates{
 				$cforms_dropdown = Cforms_Handler::get_cforms_drop_down();								
 				include self::get_file_location('includes/add-response-scheduler.php');
 				break;
+			
+			case "stat" :
+				include self::get_file_location('includes/scheduler-statistics.php');
+				break;
 				
-			default : 
-				include self::get_file_location('includes/response-scheduler.php');
+			default :
+				//self::delete_a_responder();
+				$auto_responders = emaildripcampaign_responders::get_auto_responders();
+				include self::get_file_location('includes/response-schedulers.php');
 				break;
 		}
 		
 	}
-	
 	
 	
 	/*
@@ -143,7 +177,7 @@ class emaildripcampaign_templates{
 	static function get_email_templates(){
 		global $wpdb;
 		$post_type = self::posttype;
-		$sql = "SELECT ID, post_title FROM $wpdb->posts WHERE post_type='$post_type' AND post_status = 'publish'";
+		$sql = "SELECT ID, post_title FROM $wpdb->posts WHERE post_type='$post_type' AND post_status = 'publish' ORDER BY post_title";
 		return $wpdb->get_results($sql);		
 	}
 		

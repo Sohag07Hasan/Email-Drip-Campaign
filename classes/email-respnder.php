@@ -18,6 +18,9 @@ class emaildripcampaign_responders{
 		add_action( 'admin_enqueue_scripts', array(get_class(), 'include_scripts'));
 		
 		add_action('init', array(get_class(), 'handle_form_submission'), 100);
+		
+		//delete an scheduler
+		add_action('init', array(get_class(), 'delete_a_responder'), 90);
 	}
 	
 	
@@ -143,5 +146,37 @@ class emaildripcampaign_responders{
 		wp_redirect($url);
 		die();
 	}
+	
+	
+	/*
+	 * get_auto_responders
+	 * */
+	static function get_auto_responders(){
+		global $wpdb;
+		$post_type = self::posttype;
+		$sql = "SELECT ID, post_title FROM $wpdb->posts WHERE post_type='$post_type' AND post_status = 'publish' ORDER BY post_title";
+		return $wpdb->get_results($sql);
+	}
+	
+	
+	/*
+	 * delete a responder
+	 * */
+	static function delete_a_responder(){
+		if($_GET['action'] == 'del' && isset($_GET['id']) && $_GET['page'] == 'autoresponder'){
+			$id = (int) $_GET['id'];
+			if(wp_delete_post($id, true)){
+				$redirect_url = get_admin_url('', 'edit.php?post_type=email&page=autoresponder&msg=1');				
+			}
+			else{
+				$redirect_url = get_admin_url('', 'edit.php?post_type=email&page=autoresponder&msg=2');
+			}
+			
+			emaildripcampaign_responders::do_redirect($redirect_url);
+		}
+				
+	}
+	
+	
 	
 }
