@@ -30,7 +30,8 @@ class Cforms_Handler{
 	
 		$dropdown = '<option '.$sel.' value="0">Choose a Contact Form</option>';
 		for($i=1; $i<=$form_count; $i++){
-			$j = ($i > 1) ? $i : '';
+			$j = $i;
+			if($i<1) continue;
 			
 			$sel = '';
 			if($j === (int)$form_id) $sel = 'selected="selected"';
