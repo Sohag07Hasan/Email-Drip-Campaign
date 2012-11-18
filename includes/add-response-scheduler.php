@@ -132,6 +132,15 @@
 	
 	<form class='form-table single-responder' action=<?php echo get_admin_url('', 'edit.php?post_type=email&page=autoresponder&action=new'); ?> method='post'>
 		<input type="hidden" name="single-responder-submit" value="Y" />
+		
+		<?php 
+			if(isset($_GET['id'])){
+				?>
+					<input type="hidden" name="scheduler-update" value="<?php echo trim($_GET['id']); ?>" />
+				<?php 
+			}
+		?>
+		
 		<table>
 			<tr> 
 				<td>

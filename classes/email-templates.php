@@ -180,5 +180,17 @@ class emaildripcampaign_templates{
 		$sql = "SELECT ID, post_title FROM $wpdb->posts WHERE post_type='$post_type' AND post_status = 'publish' ORDER BY post_title";
 		return $wpdb->get_results($sql);		
 	}
+	
+	
+	
+	/*
+	 * get only a single template
+	 * */
+	static function get_single_template($post_id){
+		global $wpdb;
+		$post_type = self::posttype;
+		$sql = "SELECT post_title, post_content FROM $wpdb->posts WHERE post_type='$post_type' AND post_status = 'publish' AND ID = '$post_id'";
+		return $wpdb->get_row($sql);	
+	}
 		
 }

@@ -11,6 +11,8 @@ define("EMAILDRIPCAMPAIGN_DIR", dirname(__FILE__));
 define("EMAILDRIPCAMPAIGN_FILE", __FILE__);
 define("EMAILDRIPCAMPAIGN_URL", plugins_url('/', __FILE__));
 
+
+
 include EMAILDRIPCAMPAIGN_DIR . '/classes/email-templates.php';
 emaildripcampaign_templates::init();
 
@@ -20,3 +22,5 @@ emaildripcampaign_responders::init();
 
 //including cform handler
 include EMAILDRIPCAMPAIGN_DIR . '/classes/cforms-handler.php';
+Cforms_Handler::init();
+

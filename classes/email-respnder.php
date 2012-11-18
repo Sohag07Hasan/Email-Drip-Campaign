@@ -110,6 +110,10 @@ class emaildripcampaign_responders{
 			'post_status' => 'publish'
 		);
 		
+		if(isset($_POST['scheduler-update'])){
+			$post["ID"] = trim($_POST['scheduler-update']);
+		}
+		
 		$post_id = wp_insert_post($post);
 		
 		if($post_id){
@@ -177,6 +181,13 @@ class emaildripcampaign_responders{
 				
 	}
 	
+	
+	/*
+	 * return the associated templates as array
+	 * */
+	static function get_associated_email_templates($responder_id = 0){
+		return get_post_meta($responder_id, 'associated_templates', true);
+	}
 	
 	
 }
