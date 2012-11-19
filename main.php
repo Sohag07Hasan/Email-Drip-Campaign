@@ -24,3 +24,6 @@ emaildripcampaign_responders::init();
 include EMAILDRIPCAMPAIGN_DIR . '/classes/cforms-handler.php';
 Cforms_Handler::init();
 
+//include the cron job
+include EMAILDRIPCAMPAIGN_DIR . '/classes/scheduler-cron.php';
+
