@@ -45,6 +45,10 @@ class Scheduler_cron_job{
 				$headers[] = 'From: '.get_bloginfo('name'). ' ' . $email_essentials['email-from'];
 				$headers[] = 'Replay-To: ' . $email_essentials['email-replay-to'];
 				
+				$email_content_sanitized = preg_replace('#%' . Cforms_Handler::name . '%#', $receiver_details->name, $email_contents->post_content);
+				$email_content_sanitized = preg_replace('#%' . Cforms_Handler::email . '%#', $receiver_details->email, $email_content_sanitized);
+				
+				
 				if(wp_mail($receiver_details->email, $email_essentials['email-subject'], $email_contents->post_content, $headers)){
 					self::change_db_status($lead_details);
 				}

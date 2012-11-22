@@ -14,7 +14,7 @@ class Cforms_Handler{
 	static function init(){
 		add_action('cform_action_with_responders', array(get_class(), 'cforms_submitted'), 10, 1);
 		register_activation_hook(EMAILDRIPCAMPAIGN_FILE, array(get_class(), 'manage_tables'));
-		register_deactivation_hook(EMAILDRIPCAMPAIGN_FILE, array(get_class(), 'delete_tables'));
+		//register_deactivation_hook(EMAILDRIPCAMPAIGN_FILE, array(get_class(), 'delete_tables'));
 	}
 	
 	/*
@@ -124,8 +124,11 @@ class Cforms_Handler{
 			if(!function_exists('wp_mail')){
 				include ABSPATH . '/wp-includes/pluggable.php';
 			}
-
-			return wp_mail($lead_data['email'], $essentials['email-subject'], $template_data->post_content, $headers);
+			
+			$email_content = preg_replace('#%' . self::name . '%#', $lead_data['name'], $template_data->post_content);
+			$email_content = preg_replace('#%' . self::email . '%#', $lead_data['email'], $email_content);
+			
+			return wp_mail($lead_data['email'], $essentials['email-subject'], $email_content, $headers);
 		}
 		else{
 			return false;

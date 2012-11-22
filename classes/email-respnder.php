@@ -254,4 +254,18 @@ class emaildripcampaign_responders{
 		
 		return $wpdb->update($lead_table, array('status' => $status), array('ID' => $lead_id), array('%d'), array('%d'));
 	}
+	
+	
+	/*
+	 * return the email counts
+	 * */
+	static function get_email_count($id){
+		global $wpdb;
+		$relation_table = $wpdb->prefix . 'cfomrsleadsrelation';
+		//$lead_table = $wpdb->prefix . 'cformsleads';
+		//$sql = "SELECT COUNT($lead_table.ID) FROM $lead_table INNER JOIN $relation_table ON $lead_table.ID = $relation_table.scheduler_id WHERE $relation_table.scheduler_id = $id";
+		$sql = "SELECT lead_id FROM $relation_table WHERE scheduler_id = $id GROUP BY lead_id";
+		return count($wpdb->get_col($sql));
+	}
 }
+

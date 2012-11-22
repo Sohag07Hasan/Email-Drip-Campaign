@@ -35,10 +35,11 @@
 					$edit = get_admin_url('', 'edit.php?post_type=email&page=autoresponder&action=new&id='.$responder->ID);
 					$del = get_admin_url('', 'edit.php?post_type=email&page=autoresponder&action=del&id='.$responder->ID);
 					$stat = get_admin_url('', 'edit.php?post_type=email&page=autoresponder&action=stat&id='.$responder->ID);
+					$email_count = emaildripcampaign_responders::get_email_count($responder->ID);
 ?>
 					<tr>
 						<td><a href="<?php echo $stat; ?>" title="view statistics"><?php echo $responder->post_title; ?></a></td>
-						<td><?php echo "email"; ?></td>
+						<td><?php echo $email_count; ?></td>
 						<td><a href="<?php echo $edit;?>">edit</a></td>
 						<td><a href="<?php echo $del;?>">delete</a></td>						
 					</tr>					
