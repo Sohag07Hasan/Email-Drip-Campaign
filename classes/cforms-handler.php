@@ -14,6 +14,7 @@ class Cforms_Handler{
 	static function init(){
 		add_action('cform_action_with_responders', array(get_class(), 'cforms_submitted'), 10, 1);
 		register_activation_hook(EMAILDRIPCAMPAIGN_FILE, array(get_class(), 'manage_tables'));
+		register_deactivation_hook(EMAILDRIPCAMPAIGN_FILE, array(get_class(), 'delete_tables'));
 	}
 	
 	/*
@@ -198,7 +199,13 @@ class Cforms_Handler{
 		$wpdb->query($sql_2);
 	}
 	
-	
+	static function delete_tables(){
+		global $wpdb;
+		$lead_table = $wpdb->prefix . 'cformsleads';
+		$relation_table = $wpdb->prefix . 'cfomrsleadsrelation';
+		$wpdb->query("DROP TABLE $lead_table");
+		$wpdb->query("DROP TABLE $relation_table");
+	}
 	
 	//insert the lead data and return the lead id
 	static function insert_lead($data = array()){
