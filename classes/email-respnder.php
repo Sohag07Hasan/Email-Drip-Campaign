@@ -190,4 +190,68 @@ class emaildripcampaign_responders{
 	}
 	
 	
+	/*
+	 * get the leads associated with a scheduler
+	 * */
+	static function get_leads($scheduler_id = 0){
+		global $wpdb;
+		$lead_table = $wpdb->prefix . 'cformsleads';
+		$relation_table = $wpdb->prefix . 'cfomrsleadsrelation';
+		
+		$sql = "
+			SELECT lead_id, template_id, scheduled, status FROM $relation_table WHERE scheduler_id = $scheduler_id ORDER BY lead_id
+		";
+		
+		return $wpdb->get_results($sql);
+		
+	}
+	
+	
+	/*
+	 * return a lead
+	 * */
+	static function get_the_lead($id = 0){
+		global $wpdb;
+		$lead_table = $wpdb->prefix . 'cformsleads';
+		$relation_table = $wpdb->prefix . 'cfomrsleadsrelation';
+		
+		$sql = "
+			SELECT * FROM $lead_table WHERE ID = $id
+		";
+		
+		return $wpdb->get_row($sql);
+	}
+	
+	
+	
+	/*
+	 * return the images
+	 * 
+	 * */
+	
+	static function get_images(){
+		return array(
+			't' => EMAILDRIPCAMPAIGN_URL . 'images/tick_16.png',
+			'p' => EMAILDRIPCAMPAIGN_URL . 'images/wait.png',
+			'b' => EMAILDRIPCAMPAIGN_URL . 'images/block_16.png',
+			's' => EMAILDRIPCAMPAIGN_URL . 'images/calendar_16.png',
+		);
+	}
+	
+	
+	
+	/*
+	 * toggle the lead status
+	 * */
+	static function toggle_subscription(){
+		$lead_id = (int) $_GET['lead_id'];
+		global $wpdb;
+		$lead_table = $wpdb->prefix . 'cformsleads';
+		$status = 0;
+		if($_GET['act'] == 's'){
+			$status = 1;
+		}
+		
+		return $wpdb->update($lead_table, array('status' => $status), array('ID' => $lead_id), array('%d'), array('%d'));
+	}
 }

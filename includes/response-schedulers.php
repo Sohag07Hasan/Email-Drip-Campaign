@@ -1,6 +1,6 @@
 
 <style type="text/css">
-	.autoresponder-schedulers tr{
+	.autoresponder-schedulers td{
 		padding: 10px;
 	}
 </style>

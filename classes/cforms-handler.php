@@ -93,8 +93,9 @@ class Cforms_Handler{
 							);
 							
 							if($scheduled_time == $current_time){
-								self::email_sender($lead_data, $template);
-								$relations['status'] = 1;		
+								if(self::email_sender($lead_data, $template)){
+									$relations['status'] = 1;	
+								}									
 							}
 														
 							self::set_lead_relations($relations);
@@ -124,6 +125,9 @@ class Cforms_Handler{
 			}
 
 			return wp_mail($lead_data['email'], $essentials['email-subject'], $template_data->post_content, $headers);
+		}
+		else{
+			return false;
 		}
 	}
 	
@@ -211,8 +215,7 @@ class Cforms_Handler{
 		global $wpdb;
 		$relation_table = $wpdb->prefix . 'cfomrsleadsrelation';
 		return $wpdb->insert($relation_table, $relations, array('%d', '%d', '%d', '%d', '%d', '%d', '%d'));
-	}
-	
+	}	
 	
 	
 	

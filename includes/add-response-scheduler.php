@@ -102,6 +102,8 @@
 		    border: 1px solid #ccc; 
 		    height: 30px;
 		}
+		
+		
 				
 </style>
 
@@ -141,7 +143,7 @@
 			}
 		?>
 		
-		<table>
+		<table class="widefat scheduler-statistic-table">
 			<tr> 
 				<td>
 					<span class="guide-texts"><label for="responder_title"> Responder Title <label></span> <br/> 
