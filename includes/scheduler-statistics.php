@@ -78,7 +78,7 @@
 							?>
 							
 							<p class="template-with-status">
-								<?php echo $template->post_title; ?>  <img title="<?php echo $title; ?>" alt="<?php echo $title; ?>" src="<?php echo $image; ?>">
+								<?php echo $template->post_title; ?>  (<?php echo date("m/d", $l->scheduled); ?>)  <img title="<?php echo $title; ?>" alt="<?php echo $title; ?>" src="<?php echo $image; ?>">								
 							</p>
 							
 							<?php 
