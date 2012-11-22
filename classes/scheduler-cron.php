@@ -49,7 +49,7 @@ class Scheduler_cron_job{
 				$email_content_sanitized = preg_replace('#%' . Cforms_Handler::email . '%#', $receiver_details->email, $email_content_sanitized);
 				
 				
-				if(wp_mail($receiver_details->email, $email_essentials['email-subject'], $email_contents->post_content, $headers)){
+				if(wp_mail($receiver_details->email, $email_essentials['email-subject'], $email_content_sanitized, $headers)){
 					self::change_db_status($lead_details);
 				}
 			}
@@ -77,7 +77,7 @@ class Scheduler_cron_job{
 		$relation_table = $wpdb->prefix . 'cfomrsleadsrelation';
 		$current_time = (int) current_time('timestamp');
 		
-		$sql = "SELECT lead_id, scheduler_id, template_id FROM $relation_table
+		$sql = "SELECT $relation_table.lead_id, $relation_table.scheduler_id, $relation_table.template_id FROM $relation_table
 			INNER JOIN $lead_table ON $lead_table.ID = $relation_table.lead_id
 			WHERE $lead_table.status = 1
 			AND $relation_table.status = 0
